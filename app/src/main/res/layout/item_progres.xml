@@ -1,0 +1,40 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp">
+
+    <ProgressBar
+        android:id="@+id/loadmore_progress"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/progress_white_circle"
+        android:padding="4dp"
+        android:rotation="10" />
+
+    <LinearLayout
+        android:id="@+id/loadmore_errorlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/activity_margin"
+        android:paddingTop="@dimen/activity_margin"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageButton
+            android:id="@+id/loadmore_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/rety_selector"
+            android:padding="@dimen/activity_margin_half"
+            android:src="@drawable/ic_refresh_black_24dp"
+            android:contentDescription="@string/app_name"/>
+
+    </LinearLayout>
+
+</FrameLayout>

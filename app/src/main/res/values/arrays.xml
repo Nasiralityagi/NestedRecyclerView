@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="query_suggestions">
+        <item>A very very long suggestion that would span multiple lines.</item>
+        <item>Android</item>
+        <item>iOS</item>
+        <item>SCALA</item>
+        <item>Ruby</item>
+        <item>JavaScript</item>
+        <item>C#</item>
+        <item>Python</item>
+        <item>C</item>
+        <item>C++</item>
+        <item>PHP</item>
+        <item>Go</item>
+        <item>Perl</item>
+        <item>Bash</item>
+        <item>Lua</item>
+        <item>R</item>
+        <item>TCL</item>
+        <item>Haskell</item>
+        <item>Objective C</item>
+        <item>Swift</item>
+        <item>Kotlin</item>
+        <item>jQuery</item>
+        <item>Development</item>
+        <item>Web</item>
+        <item>Ajax</item>
+        <item>Test</item>
+        <item>Testing</item>
+        <item>CookBook</item>
+        <item>Beagle</item>
+        <item>VMware</item>
+        <item>Less.js</item>
+        <item>IDE</item>
+        <item>Arduino</item>
+        <item>Xamarin</item>
+        <item>UI</item>
+        <item>Microsoft</item>
+        <item>Application</item>
+        <item>Development</item>
+        <item>JUnit</item>
+        <item>SQL</item>
+        <item>Beagle</item>
+    </string-array>
+
+    <string-array name="youtube_category_video_id_key">
+        <item>17</item>
+        <item>28</item>
+        <item>1</item>
+        <item>10</item>
+        <item>0</item>
+        <item>20</item>
+        <item>2</item>
+        <item>15</item>
+        <item>26</item>
+        <item>23</item>
+    </string-array>
+
+    <string-array name="youtube_category_video_id_value">
+        <item>@string/youtube_Sports</item>
+        <item>@string/youtube_Science_Technology</item>
+        <item>@string/youtube_Film_Animation</item>
+        <item>@string/youtube_Music</item>
+        <item>@string/youtube_Trailer</item>
+        <item>@string/youtube_Gaming</item>
+        <item>@string/youtube_Autos_Vehicles</item>
+        <item>@string/youtube_Pets_Animals</item>
+        <item>@string/youtube_Howto_Style</item>
+        <item>@string/youtube_Comedy</item>
+    </string-array>
+
+
+    <string-array name="ld_activityScreenTitles">
+        <item>Dashboard</item>
+        <item>My Account</item>
+        <item>Messages</item>
+        <item>Cart</item>
+        <item />
+        <item>Log Out</item>
+    </string-array>
+    <string-array name="items">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+    <array name="ld_activityScreenIcons">
+        <item>@drawable/ic_home_outline_grey600_24dp</item>
+        <item>@drawable/ic_account_outline_grey600_24dp</item>
+        <item>@drawable/ic_email_outline_grey600_24dp</item>
+        <item>@drawable/ic_cart_outline_grey600_24dp</item>
+        <item>0</item>
+        <item>@drawable/ic_logout_grey600_24dp</item>
+    </array>
+
+</resources>

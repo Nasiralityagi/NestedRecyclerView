@@ -1,0 +1,137 @@
+<resources>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="my_api_key">ec01f8c2eb6ac402f2ca026dc2d9b8fd</string>
+    <string name="action_settings">Settings</string>
+    <string name="header">I\'m header</string>
+
+    <string name="app_name" translatable="false">MeTube</string>
+
+    <string name="home">Home</string>
+    <string name="refresh">Refresh</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="openInBrowser">Open in browser</string>
+    <string name="castToKodi">Cast to Kodi</string>
+    <string name="acceptCookies">Accept cookies</string>
+    <string name="share">Share</string>
+    <string name="enableTor">Enable Tor</string>
+    <string name="disableTor">Disable Tor</string>
+    <string name="menu">Menu</string>
+
+    <string name="torWarning">Using Tor irresponsibly, like signing in to your YouTube account, will deanonymize your traffic and only make it worse.</string>
+    <string name="enable">Enable</string>
+
+    <string name="addPage">Add this page</string>
+    <string name="removePage">Remove this page</string>
+
+    <string name="errorNoInternet">Oh no! You are not connected to the internet.</string>
+    <string name="errorTor">Oh no! Tor is not working properly.</string>
+    <string name="error">Oh no!</string>
+
+    <string name="error_no_video">No Video!</string>
+    <string name="error_select_video_and_retry">Please select a video and try again.</string>
+
+    <string name="share_with">Share with…</string>
+
+    <string name="homePageSet">Your homepage has been set to this page.</string>
+    <string name="homePageHelp">If you want to change the homepage, just hold the Home button and it changes to the current opened page.</string>
+    <string name="set_as_home">Set as home</string>
+    <string name="playInBackground">Play in background</string>
+    <string name="download">Download</string>
+    <string name="browse_all">Browse All</string>
+
+    <!--***Pagining string***-->
+    <string name="error_msg">Sorry! Couldn\'t fetch movies.</string>
+    <string name="btn_retry">Retry</string>
+    <string name="error_msg_no_internet">Not connected to internet</string>
+    <string name="error_msg_timeout">The server took too long to respond</string>
+    <string name="error_msg_unknown">An unexpected error occurred</string>
+    <string name="tap_to_reload">Tap to reload</string>
+
+    <!-- youtube category name  -->
+    <!-- 2 - Autos & Vehicles
+    1 -  Film & Animation
+    10 - Music
+    15 - Pets & Animals
+    17 - Sports
+    18 - Short Movies
+    19 - Travel & Events
+    20 - Gaming
+    21 - Videoblogging
+    22 - People & Blogs
+    23 - Comedy
+    24 - Entertainment
+    25 - News & Politics
+    26 - Howto & Style
+    27 - Education
+    28 - Science & Technology
+    29 - Nonprofits & Activism
+    30 - Movies
+    31 - Anime/Animation
+    32 - Action/Adventure
+    33 - Classics
+    34 - Comedy
+    35 - Documentary
+    36 - Drama
+    37 - Family
+    38 - Foreign
+    39 - Horror
+    40 - Sci-Fi/Fantasy
+    41 - Thriller
+    42 - Shorts
+    43 - Shows
+    44 - Trailers
+
+
+    From  youtube upload page
+    2 - Cars & Vehicles
+    23 - Comedy
+    27 - Education
+    24 - Entertainment
+    1 - Film & Animation
+    20 - Gaming
+    26 - How-to & Style
+    10 - Music
+    25 - News & Politics
+    29 - Non-profits & Activism
+    22 - People & Blogs
+    15 - Pets & Animals
+    28 - Science & Technology
+    17 - Sport
+    19 - Travel & Events-->
+
+    <string name="youtube_Sports">Sports</string>
+    <string name="youtube_Science_Technology"><![CDATA[Science & Technology]]></string>
+    <string name="youtube_Film_Animation"><![CDATA[Film & Animation]]></string>
+    <string name="youtube_Music">Music</string>
+    <string name="youtube_Trailer">Hot Trends</string>
+    <string name="youtube_Gaming">Gaming</string>
+    <string name="youtube_Autos_Vehicles"><![CDATA[Autos & Vehicles]]></string>
+    <string name="youtube_Pets_Animals"><![CDATA[Pets & Animals]]></string>
+    <string name="youtube_Howto_Style"><![CDATA[How to & Style]]></string>
+    <string name="youtube_Comedy"><![CDATA[Comedy]]></string>
+    <string name="back">Back</string>
+    <string name="forword">Forword</string>
+    <string name="error_network">Sorry, Could not fetch data.</string>
+    <string name="error_something_went_wrong">Something went wrong Internet or Data.</string>
+    <string name="retry">Retry</string>
+    <string name="by">By</string>
+    <string name="views">Views</string>
+    <string name="view_all">VIEW ALL</string>
+    <string name="privacy_footer">Privacy Policy</string>
+
+
+    <string name="account_balance">Account Balance</string>
+    <string name="balance_currency">$</string>
+    <string name="balance_amount">524.99</string>
+
+    <!--Sliding Panal-->
+    <string name="srn_drawer_open">Open</string>
+    <string name="srn_drawer_close">Close</string>
+    <string name="srn_ex_no_menu_view">No view for menu provided. You must either call .withMenuView(View) or pass a valid resource id to .withMenuLayout(int)</string>
+    <string name="srn_ex_bad_content_view">Your content view must contain exactly one child. Make sure you call inject() after setContentView().</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

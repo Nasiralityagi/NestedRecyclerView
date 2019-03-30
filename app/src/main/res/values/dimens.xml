@@ -1,0 +1,85 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_margin">16dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="statusbar_margin">0dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="top_fragment_height">210dip</dimen>
+    <dimen name="top_fragment_margin">10dip</dimen>
+    <item name="x_scale_factor" format="float" type="dimen">2.3</item>
+    <item name="y_scale_factor" format="float" type="dimen">2.3</item>
+
+    <dimen name="paddingItemDecorationDefault">8dp</dimen>
+    <dimen name="paddingItemDecorationEdge">24dp</dimen>
+    <dimen name="activity_margin_content">24dp</dimen>
+    <dimen name="activity_margin_half">8dp</dimen>
+    <dimen name="poster_thumb_width">72dp</dimen>
+    <dimen name="poster_thumb_height">96dp</dimen>
+    <dimen name="activity_margin_quarter">4dp</dimen>
+
+    <dimen name="nav_drawer_item_hor_pad">24dp</dimen>
+
+    <dimen name="card_elevation">2dp</dimen>
+
+    <dimen name="content_inset_quarter">4dp</dimen>
+    <!-- Minus 2 for negative margin on cards -->
+    <dimen name="content_inset_half_card">6dp</dimen>
+    <dimen name="content_inset_half">8dp</dimen>
+
+    <dimen name="content_inset_less">12dp</dimen>
+    <dimen name="content_inset">16dp</dimen>
+    <dimen name="content_inset_more">24dp</dimen>
+
+    <dimen name="fab_bottom_margin">0dp</dimen>
+    <dimen name="fab_horizontal_margin">0dp</dimen>
+    <dimen name="list_with_fab_bottom_margin">84dp</dimen>
+
+    <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="grid_margin">4dp</dimen>
+    <dimen name="grid_margin_icons">8dp</dimen>
+
+    <dimen name="card_sides_margin">1.41dp</dimen>
+    <dimen name="card_vertical_margin">0.41dp</dimen>
+
+    <dimen name="empty_text_size">24sp</dimen>
+
+    <dimen name="header_text_size">22sp</dimen>
+    <dimen name="title_text_size">18sp</dimen>
+    <dimen name="content_text_size">16sp</dimen>
+    <dimen name="body_text_size">14sp</dimen>
+
+    <dimen name="quickapply_card_minheight">64dp</dimen>
+    <dimen name="apply_title_minheight">44dp</dimen>
+
+    <dimen name="drawer_header_height">196dp</dimen>
+    <dimen name="landing_page_icon_size">236dp</dimen>
+
+    <dimen name="second_keyline">72dp</dimen>
+    <dimen name="toolbar_horizontal_padding">4dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+
+    <dimen name="item_offset">10dp</dimen>
+    <dimen name="detail_backdrop_height">250dp</dimen>
+    <dimen name="backdrop_title">30dp</dimen>
+    <dimen name="backdrop_subtitle">18dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="card_album_radius">2dp</dimen>
+    <dimen name="album_cover_width">145dp</dimen>
+    <dimen name="album_cover_height">90dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="album_title">15dp</dimen>
+    <dimen name="padding_5">5dp</dimen>
+    <dimen name="songs_count">14dp</dimen>
+    <dimen name="ic_album_overflow_width">20dp</dimen>
+    <dimen name="ic_album_overflow_height">30dp</dimen>
+    <dimen name="ic_album_overflow_margin_top">10dp</dimen>
+    <dimen name="list_card_height">310dp</dimen>
+
+
+</resources>
