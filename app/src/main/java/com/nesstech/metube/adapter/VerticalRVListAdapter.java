@@ -11,9 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,8 +65,6 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private SetViewMoreClickListener mVrvItemListener;
     private SetVideoClickListener mHrvItemListener;
     private SetSiteItemListener mSiteItemListener;
-    private RecyclerView.RecycledViewPool mRecyPool;
-
 
     public VerticalRVListAdapter(List<Item> resultsTopTrending, MainActivity context, FragmentManager childFragmentManager) {
         this.listItems = new ArrayList<>();
@@ -79,7 +75,6 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.mVrvItemListener = context;
         this.mHrvItemListener = context;
         this.mSiteItemListener = context;
-        mRecyPool = new RecyclerView.RecycledViewPool();
         movieService = VIdeoApi.getClient().create(VideoService.class);
     }
 
@@ -93,10 +88,7 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 return new PagerViewHolder(v1);
             case ITEM:
                 View v3 = inflater.inflate(R.layout.videos_list_item, parent, false);
-                v3.setTag(ONEPLUS += 1);
-                VideosListViewHolder holder =  new VideosListViewHolder(v3);
-                holder.recyclerView.setRecycledViewPool(mRecyPool);
-                return holder;
+                return new VideosListViewHolder(v3);
             case LOADING:
                 View v4 = inflater.inflate(R.layout.item_progress, parent, false);
                 return new LoadingVH(v4);
@@ -110,10 +102,7 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         switch (getItemViewType(position)) {
             case ITEM:
                 final VideosListViewHolder holder = (VideosListViewHolder) vh;
-                /*SectionDataModel feed = listItems.get(position);
-                holder.txtName.setText(feed.getHeaderTitle());*/
                 holder.bindVideoList(getItem(position));
-                ((LinearLayoutManager)holder.recyclerView.getLayoutManager()).setInitialPrefetchItemCount(4);
                 break;
 
             case HEADER:
@@ -144,6 +133,10 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return listItems.size();
     }
 
+    private SectionDataModel getItem(int position) {
+        return listItems.get(position);
+    }
+
     public void addAll(List<SectionDataModel> listItems) {
         for (SectionDataModel result : listItems) {
             add(result);
@@ -168,10 +161,6 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             listItems.remove(position);
             notifyItemRemoved(position);
         }
-    }
-
-    private SectionDataModel getItem(int position) {
-        return listItems.get(position);
     }
 
     @Override
@@ -347,9 +336,6 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             tvMore = view.findViewById(R.id.tvMore);
             recyclerView = view.findViewById(R.id.main_recycler);
             tvMore.setOnClickListener(this);
-            /*Object position = view.getTag();
-            int pos = (int) position;
-            bindVideoList(getItem(pos));*/
         }
 
         private void bindVideoList(final SectionDataModel feed) {
@@ -380,7 +366,6 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             });
 
             loadFirstPage(feed, adapter);
-
         }
 
         private void loadNextPage(final SectionDataModel feed, final HorizontalRVListAdapter adapter) {

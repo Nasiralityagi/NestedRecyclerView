@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,7 +69,15 @@ public class MainFragment extends Fragment {
          * to optimize better by figuring out the exact height and width
          * of the entire list based on the your adapter.{@link setHasFixedSize()true}*/
         rv.setHasFixedSize(true);
-        //rv.setNestedScrollingEnabled(false);
+        /**These below line help to consistent list data in recyclerview vertically
+         * Here In my list vertically having only 10 items which i don't want to rebind again
+         * getRecycledViewPool()
+         * setItemViewCacheSize()
+         * both method helps you not to recycle vertical views
+         * But if your list is too large then it will cause you OOM error
+         */
+        rv.getRecycledViewPool().setMaxRecycledViews(0, 10);
+        rv.setItemViewCacheSize(10);
         errorLayout = rootView.findViewById(R.id.error_layout);
         Button btnRetry = rootView.findViewById(R.id.error_btn_retry);
         sectionkey = getResources().getStringArray(R.array.youtube_category_video_id_key);
@@ -173,7 +182,7 @@ public class MainFragment extends Fragment {
                     adapter.addLoadingFooter();
                 else isLastPage = true;
             }
-        }, 1500);
+        }, 500);
     }
 
     private void loadData() {

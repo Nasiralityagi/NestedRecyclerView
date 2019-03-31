@@ -5,19 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">-->
     <com.nesstech.metube.customview.SpringRecyclerView
         android:id="@+id/main_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:orientation="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/videos_list_item" />
-    <!--</android.support.v4.widget.NestedScrollView>-->
-
 
     <include layout="@layout/error_layout" />
 

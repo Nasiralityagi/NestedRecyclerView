@@ -181,6 +181,8 @@ public class HorizontalRVListAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         private void bindData(final Item result) {
+            if(result == null)
+                return;
             String videoChannelTitle = result.getSnippet().getChannelTitle() == null ? "Unknown" : result.getSnippet().getChannelTitle();
             String videoImage = result.getSnippet().getThumbnails().getHigh().getUrl() == null ?
                     (result.getSnippet().getThumbnails().getMedium().getUrl() == null ?
