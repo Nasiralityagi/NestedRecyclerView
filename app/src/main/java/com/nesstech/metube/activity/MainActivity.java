@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements VerticalRVListAda
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_download:
-                Intent serverIntent = new  Intent(this, MainActivityPagination.class);
+                Intent serverIntent = new  Intent(this, VListActivity.class);
                 startActivity(serverIntent);
                 Toast.makeText(this, "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
                 return true;
@@ -293,12 +293,9 @@ public class MainActivity extends AppCompatActivity implements VerticalRVListAda
         float yScaleFactor = typedValue.getFloat();
         draggablePanel.setXScaleFactor(xScaleFactor);
         draggablePanel.setYScaleFactor(yScaleFactor);
-        draggablePanel.setTopViewHeight(
-                getResources().getDimensionPixelSize(R.dimen.top_fragment_height));
-        draggablePanel.setTopFragmentMarginRight(
-                getResources().getDimensionPixelSize(R.dimen.top_fragment_margin));
-        draggablePanel.setTopFragmentMarginBottom(
-                getResources().getDimensionPixelSize(R.dimen.top_fragment_margin));
+        draggablePanel.setTopViewHeight(getResources().getDimensionPixelSize(R.dimen.top_fragment_height));
+        draggablePanel.setTopFragmentMarginRight(getResources().getDimensionPixelSize(R.dimen.top_fragment_margin));
+        draggablePanel.setTopFragmentMarginBottom(getResources().getDimensionPixelSize(R.dimen.top_fragment_margin));
         draggablePanel.initializeView();
         draggablePanel.maximize();
         draggablePanel.setVisibility(View.VISIBLE);

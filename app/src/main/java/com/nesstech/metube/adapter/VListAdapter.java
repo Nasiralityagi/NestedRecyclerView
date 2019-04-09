@@ -7,7 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -15,6 +17,8 @@ import com.nesstech.metube.R;
 import com.nesstech.metube.Utility.Utills;
 import com.nesstech.metube.activity.MainActivity;
 import com.nesstech.metube.adapter.HorizontalRVListAdapter.SetVideoClickListener;
+import com.nesstech.metube.fragment.VListPanel;
+import com.nesstech.metube.pagination.PaginationAdapterCallback;
 import com.nesstech.metube.youmodel.Item;
 
 import java.text.NumberFormat;
@@ -24,22 +28,41 @@ import java.util.Locale;
 
 public class VListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int ITEM = 0;
+    private static final int LOADING = 1;
+
     private List<Item> movieResults;
     private Context context;
-    private SetVideoClickListener mListener;
 
-    public VListAdapter(MainActivity context) {
+    private boolean isLoadingAdded = false;
+    private boolean retryPageLoad = false;
+    private SetVideoClickListener mListener;
+    private PaginationAdapterCallback mCallback;
+
+    public VListAdapter(Context context, VListPanel ctx) {
         movieResults = new ArrayList<>();
+        this.mCallback = ctx;
         this.context = context;
-        this.mListener = context;
+        this.mListener = ctx;
     }
 
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder viewHolder = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return getViewHolder(parent, inflater);
+
+        switch (viewType) {
+            case ITEM:
+                viewHolder = getViewHolder(parent, inflater);
+                break;
+            case LOADING:
+                View v2 = inflater.inflate(R.layout.item_progress, parent, false);
+                viewHolder = new LoadingVH(v2);
+                break;
+        }
+        return viewHolder;
     }
 
     @NonNull
@@ -52,8 +75,21 @@ public class VListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder vh, int position) {
-        final SingleItemRowHolder holder = (SingleItemRowHolder) vh;
-        holder.bindData(movieResults.get(position));
+        switch (getItemViewType(position)) {
+            case ITEM:
+                final SingleItemRowHolder holder = (SingleItemRowHolder) vh;
+                holder.bindData(movieResults.get(position));
+                break;
+            case LOADING:
+                LoadingVH loadingVH = (LoadingVH) vh;
+                loadingVH.bindLoader();
+                break;
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return (position == movieResults.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
     }
 
     @Override
@@ -76,12 +112,47 @@ public class VListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    /*Helper*/
-    public void add(List<Item> items) {
-        int previousDataSize = this.movieResults.size();
-        this.movieResults.addAll(items);
-        notifyItemRangeInserted(previousDataSize, items.size());
+   public void addAll(List<Item> moveResults) {
+        for (Item result : moveResults) {
+            add(result);
+        }
     }
+
+    /*Helper*/
+    private void add(Item r) {
+        movieResults.add(r);
+        notifyItemInserted(movieResults.size() - 1);
+    }
+
+   public void addLoadingFooter() {
+        isLoadingAdded = true;
+        add(new Item());
+    }
+
+   public void removeLoadingFooter() {
+        isLoadingAdded = false;
+        int position = movieResults.size() - 1;
+        Item result = getItem(position);
+        if (result != null) {
+            movieResults.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    private Item getItem(int position) {
+        return movieResults.get(position);
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return (cm != null ? cm.getActiveNetworkInfo() : null) != null;
+    }
+
+    private void showRetry() {
+        retryPageLoad = false;
+        notifyItemChanged(movieResults.size() - 1);
+    }
+
 
     /* View Holders*/
     private class SingleItemRowHolder extends RecyclerView.ViewHolder {
@@ -109,6 +180,8 @@ public class VListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         private void bindData(final Item result) {
+            if(result == null)
+                return;
             String videoChannelTitle = result.getSnippet().getChannelTitle() == null ? "Unknown" : result.getSnippet().getChannelTitle();
             String videoImage = result.getSnippet().getThumbnails().getHigh().getUrl() == null ?
                     (result.getSnippet().getThumbnails().getMedium().getUrl() == null ?
@@ -155,8 +228,7 @@ public class VListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-
-    /* private class LoadingVH extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class LoadingVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ProgressBar mProgressBar;
         private ImageButton mRetryBtn;
         private LinearLayout mErrorLayout;
@@ -191,10 +263,9 @@ public class VListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 case R.id.loadmore_retry:
                 case R.id.loadmore_errorlayout:
                     showRetry();
-                    mCallback.retryPageLoad(getAdapterPosition(), AllVideoRVListAdapter.this);
+                    mCallback.retryPageLoad(getAdapterPosition(), VListAdapter.this);
                     break;
             }
         }
-    }*/
-
+    }
 }

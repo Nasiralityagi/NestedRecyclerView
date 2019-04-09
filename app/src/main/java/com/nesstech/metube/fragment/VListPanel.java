@@ -7,24 +7,25 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.nesstech.metube.R;
 import com.nesstech.metube.Retrofit2.VIdeoApi;
 import com.nesstech.metube.Retrofit2.VideoService;
 import com.nesstech.metube.activity.MainActivity;
+import com.nesstech.metube.adapter.HorizontalRVListAdapter;
 import com.nesstech.metube.adapter.VListAdapter;
+import com.nesstech.metube.adapter.VerticalRVListAdapter;
 import com.nesstech.metube.customview.SpringRecyclerView;
-import com.nesstech.metube.paginate.Paginate;
-import com.nesstech.metube.paginate.recycler.LoadingListItemSpanLookup;
+import com.nesstech.metube.pagination.PaginationAdapterCallback;
+import com.nesstech.metube.pagination.PaginationScrollListener;
 import com.nesstech.metube.youmodel.Item;
 import com.nesstech.metube.youmodel.YoutubeData;
 
@@ -34,22 +35,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VListPanel extends Fragment implements Paginate.Callbacks {
+public class VListPanel extends Fragment implements PaginationAdapterCallback {
 
     private static final int GRID_SPAN = 1;
     private Button btnRetry;
     private LinearLayout errorLayout;
     private String cID;
     private VideoService movieService;
-    private boolean loading = false;
-    private int page = 0;
-    private Paginate paginate;
-    private int totalPages;
     private VListAdapter adapter;
     private SpringRecyclerView rv;
-    private String pageToken="";
     private Context mContext;
-    private int itemLoadCount=5;
+
+    private int PAGE_START = 0;
+    private int TOTAL_PAGES = 10;
+    private String pageToken = "";
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int currentPage = PAGE_START;
+    private int itemLoadCount = 5;
 
     public VListPanel() {
         // Required empty public constructor
@@ -134,37 +137,52 @@ public class VListPanel extends Fragment implements Paginate.Callbacks {
 
     private void setupPagination() {
         // If RecyclerView was recently bound, unbind
-        if (paginate != null) {
-            paginate.unbind();
-        }
-        loadFirstPage(cID);
-        adapter = new VListAdapter((MainActivity) mContext);
+        adapter = new VListAdapter(mContext, this);
         rv.setLayoutManager(new GridLayoutManager(mContext,GRID_SPAN, GridLayoutManager.VERTICAL, false));
         //rv.setItemAnimator(new SlideInUpAnimator());
         rv.setAdapter(adapter);
-        paginate = Paginate.with(rv, this)
-                .setLoadingTriggerThreshold(4)
-                .addLoadingListItem(true)
-                .setLoadingListItemSpanSizeLookup(new LoadingListItemSpanLookup() {
-                    @Override
-                    public int getSpanSize() {
-                        return GRID_SPAN;
-                    }
-                })
-                .build();
+        rv.addOnScrollListener(new PaginationScrollListener(rv.getLayoutManager()) {
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
 
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage += itemLoadCount;
+                loadNextPage(cID);
+            }
+
+            @Override
+            public int getTotalPageCount() {
+                return TOTAL_PAGES;
+            }
+        });
+
+        loadFirstPage(cID);
     }
 
     private void loadFirstPage(final String id) {
         movieService.getTopRatedMovies("snippet,contentDetails,statistics", itemLoadCount,"mostPopular",  id, "AIzaSyAWIt3tzvIHGydiKU5UOj2GDj73rfjeeZs",pageToken).enqueue(new Callback<YoutubeData>() {
             @Override
             public void onResponse(@NonNull Call<YoutubeData> call, @NonNull Response<YoutubeData> response) {
-                if (response.isSuccessful()) {
+                if (response.body() != null && response.isSuccessful()) {
                     YoutubeData data = response.body();
-                    totalPages = data.getPageInfo().getTotalResults();
-                    if (totalPages > 0) {
+                    int totalResult = data.getPageInfo().getTotalResults();
+                    if (totalResult > 0) {
+                        TOTAL_PAGES = totalResult;
                         List<Item> results = fetchResults(data);
-                        addLoadedData(results);
+
+                        adapter.addAll(results);
+                        if (currentPage <= TOTAL_PAGES)
+                            adapter.addLoadingFooter();
+                        else isLastPage = true;
                     }
                 }
             }
@@ -181,25 +199,12 @@ public class VListPanel extends Fragment implements Paginate.Callbacks {
         return data.getItems();
     }
 
-    private void addLoadedData(List<Item> results) {
-        page = page + results.size();
-        adapter.add(results);
-        loading = false;
-    }
-
-
-    /*@Override
-    public void retryPageLoad(final int position, final RecyclerView.Adapter adapter) {
-        if (adapter instanceof AllVideoRVListAdapter) {
-            AllVideoRVListAdapter adapter1 = (AllVideoRVListAdapter) adapter;
-            loadNextPage(cID, adapter1);
-        }
-    }*/
 
     private void loadNextPage(final String id) {
         if (pageToken.isEmpty()) {
-            page = totalPages;
-            loading = false;
+            adapter.removeLoadingFooter();
+            isLoading = false;
+            isLastPage = true;
             return;
         }
 
@@ -207,9 +212,14 @@ public class VListPanel extends Fragment implements Paginate.Callbacks {
         movieService.getTopRatedMovies("snippet,contentDetails,statistics", itemLoadCount,"mostPopular",  id, "AIzaSyAWIt3tzvIHGydiKU5UOj2GDj73rfjeeZs", pageToken).enqueue(new Callback<YoutubeData>() {
             @Override
             public void onResponse(@NonNull Call<YoutubeData> call, @NonNull Response<YoutubeData> response) {
-                if (response.isSuccessful()) {
+                if (response.body() != null && response.isSuccessful()) {
                     List<Item> results = fetchResults(response.body());
-                    addLoadedData(results);
+                    adapter.removeLoadingFooter();
+                    isLoading = false;
+                    adapter.addAll(results);
+                    if (currentPage != TOTAL_PAGES)
+                        adapter.addLoadingFooter();
+                    else isLastPage = true;
                 }
             }
 
@@ -221,20 +231,9 @@ public class VListPanel extends Fragment implements Paginate.Callbacks {
     }
 
     @Override
-    public synchronized void onLoadMore() {
-        Log.d("Paginate", "onLoadMore");
-        loading = true;
-        loadNextPage(cID);
+    public void retryPageLoad(final int position, final RecyclerView.Adapter adapter) {
+        if (adapter instanceof VListAdapter) {
+            loadNextPage(cID);
+        }
     }
-
-    @Override
-    public synchronized boolean isLoading() {
-        return loading; // Return boolean weather data is already loading or not
-    }
-
-    @Override
-    public boolean hasLoadedAllItems() {
-        return page == totalPages; // If all pages are loaded return true
-    }
-
 }

@@ -121,21 +121,18 @@ public class Utills {
     }
 
 
-    public static void setThumbVideo(Context context, String videoImage, ProgressBar progress, ImageView itemImage) {
-        final ProgressBar mProgress = progress;
+    public static void setThumbVideo(Context context, String videoImage, final ProgressBar mProgress, ImageView itemImage) {
         Glide.with(context)
                 .load(videoImage)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        // TODO: 08/11/16 handle failure
                         mProgress.setVisibility(View.GONE);
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        // image ready, hide progress now
                         mProgress.setVisibility(View.GONE);
                         return false;   // return false if you want Glide to handle everything else.
                     }

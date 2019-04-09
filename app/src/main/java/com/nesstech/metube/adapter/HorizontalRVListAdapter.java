@@ -117,13 +117,13 @@ public class HorizontalRVListAdapter extends RecyclerView.Adapter<RecyclerView.V
         return (cm != null ? cm.getActiveNetworkInfo() : null) != null;
     }
 
+    /*Helper*/
     void addAll(List<Item> moveResults) {
         for (Item result : moveResults) {
             add(result);
         }
     }
 
-    /*Helper*/
     private void add(Item r) {
         movieResults.add(r);
         notifyItemInserted(movieResults.size() - 1);

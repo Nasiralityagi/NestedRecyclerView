@@ -1,6 +1,7 @@
 package com.nesstech.metube.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nesstech.metube.R;
-import com.nesstech.metube.interfaces.SiteItemListener;
 import com.nesstech.metube.model.ModelSites;
-import com.nesstech.metube.youmodel.Item;
 
 import java.util.List;
 
@@ -28,14 +27,15 @@ public class SiteItemAdapter extends RecyclerView.Adapter<SiteItemAdapter.ItemVi
         mListener = itemListener;
     }
 
+    @NonNull
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.site_item_icon_view, parent, false);
         return new ItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder Vholder, int position) {
+    public void onBindViewHolder(@NonNull ItemViewHolder Vholder, int position) {
         Vholder.setData(mValues.get(position));
     }
 

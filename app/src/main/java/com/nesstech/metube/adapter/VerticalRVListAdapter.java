@@ -382,7 +382,7 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             movieService.getTopRatedMovies("snippet,contentDetails,statistics", itemLoadCount, "mostPopular", feed.getHeaderId(), "AIzaSyAWIt3tzvIHGydiKU5UOj2GDj73rfjeeZs", pageToken).enqueue(new Callback<YoutubeData>() {
                 @Override
                 public void onResponse(@NonNull Call<YoutubeData> call, @NonNull Response<YoutubeData> response) {
-                    if (response.isSuccessful()) {
+                    if (response.body() != null && response.isSuccessful()) {
                         List<Item> results = fetchResults(response.body());
                         adapter.removeLoadingFooter();
                         isLoading = false;
@@ -404,7 +404,7 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             movieService.getTopRatedMovies("snippet,contentDetails,statistics", itemLoadCount, "mostPopular", feed.getHeaderId(), "AIzaSyAWIt3tzvIHGydiKU5UOj2GDj73rfjeeZs", pageToken).enqueue(new Callback<YoutubeData>() {
                 @Override
                 public void onResponse(@NonNull Call<YoutubeData> call, @NonNull Response<YoutubeData> response) {
-                    if (response.isSuccessful()) {
+                    if (response.body() != null && response.isSuccessful()) {
                         YoutubeData data = response.body();
                         int totalResult = data.getPageInfo().getTotalResults();
                         if (totalResult > 0) {
