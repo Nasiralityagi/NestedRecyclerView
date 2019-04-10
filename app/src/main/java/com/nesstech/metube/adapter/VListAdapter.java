@@ -39,11 +39,11 @@ public class VListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private SetVideoClickListener mListener;
     private PaginationAdapterCallback mCallback;
 
-    public VListAdapter(Context context, VListPanel ctx) {
+    public VListAdapter(MainActivity context,PaginationAdapterCallback mCallback) {
         movieResults = new ArrayList<>();
-        this.mCallback = ctx;
+        this.mCallback = mCallback;
         this.context = context;
-        this.mListener = ctx;
+        this.mListener = context;
     }
 
 
@@ -177,6 +177,31 @@ public class VListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             date = view.findViewById(R.id.date);
             overflow = view.findViewById(R.id.overflow);
             mProgress = view.findViewById(R.id.movie_progress);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    performClick(v.getId(), movieResults.get(getAdapterPosition()));
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (mListener != null) {
+                        mListener.onVideoItemLongClick( movieResults.get(getAdapterPosition()));
+                    }
+                    return false;
+                }
+            });
+
+
+            overflow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    performClick(v.getId(),  movieResults.get(getAdapterPosition()));
+                }
+            });
         }
 
         private void bindData(final Item result) {
@@ -199,32 +224,6 @@ public class VListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvDuration.setText(Utills.parseDuration(videoDuration));
             views.setText(NumberFormat.getNumberInstance(Locale.ENGLISH).format(Integer.parseInt(videoViewCount)).concat(" ").concat(context.getString(R.string.views)));
             date.setText(Utills.parseDate(videoUploadTime));
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    performClick(v.getId(), result);
-                }
-            });
-
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    if (mListener != null) {
-                        mListener.onVideoItemLongClick(result);
-                    }
-                    return false;
-                }
-            });
-
-
-            overflow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    performClick(v.getId(), result);
-                }
-            });
-
         }
     }
 

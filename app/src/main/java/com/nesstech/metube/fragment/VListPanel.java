@@ -137,7 +137,7 @@ public class VListPanel extends Fragment implements PaginationAdapterCallback {
 
     private void setupPagination() {
         // If RecyclerView was recently bound, unbind
-        adapter = new VListAdapter(mContext, this);
+        adapter = new VListAdapter(((MainActivity)mContext),this);
         rv.setLayoutManager(new GridLayoutManager(mContext,GRID_SPAN, GridLayoutManager.VERTICAL, false));
         //rv.setItemAnimator(new SlideInUpAnimator());
         rv.setAdapter(adapter);

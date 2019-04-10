@@ -41,7 +41,8 @@ import com.nesstech.metube.youmodel.Item;
 import java.util.List;
 
 @SuppressWarnings("ALL")
-public class MainActivity extends AppCompatActivity implements VerticalRVListAdapter.SetViewMoreClickListener,
+public class MainActivity extends AppCompatActivity implements
+        VerticalRVListAdapter.SetViewMoreClickListener,
         VerticalRVListAdapter.SetPagerItemListener,
         SiteItemAdapter.SetSiteItemListener,
         HorizontalRVListAdapter.SetVideoClickListener {
@@ -205,13 +206,23 @@ public class MainActivity extends AppCompatActivity implements VerticalRVListAda
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_download:
-                Intent serverIntent = new  Intent(this, VListActivity.class);
-                startActivity(serverIntent);
-                Toast.makeText(this, "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.action_search:
-                //  Toast.makeText(this, "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+                if(fragment==null){
+                    fragment = VListPanel.newInstance("1");
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out)
+                            .replace(R.id.container,fragment,"")
+                            .add(R.id.container, fragment, fragment.getClass().getName())
+                            .addToBackStack(fragment.getClass().getName())
+                            .commit();
+                }else {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .attach(fragment)
+                            .commit();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
