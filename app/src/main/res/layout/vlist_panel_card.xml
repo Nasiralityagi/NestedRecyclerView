@@ -1,175 +1,155 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/album_cover_height"
-    android:layout_marginBottom="4dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp">
+    android:layout_margin="8dp"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="horizontal">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:cardCornerRadius="@dimen/card_album_radius">
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/item_card"
+        android:layout_width="@dimen/album_cover_width"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/itemImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:background="@color/placeholder_grey"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ProgressBar
+            android:id="@+id/movie_progress"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="@dimen/activity_margin"
+            android:layout_height="@dimen/activity_margin"
+            android:layout_gravity="center"
+            android:theme="@style/CircularProgress"
+            app:layout_constraintBottom_toBottomOf="@+id/itemImage"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/semi_transparent_box_with_border"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="10sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/itemImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="SmallSp"
+            tools:text="--:--" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:maxLines="2"
+            android:paddingLeft="@dimen/padding_10"
+            android:paddingTop="4dp"
+            android:paddingRight="@dimen/padding_10"
+            android:textColor="@android:color/black"
+            android:textSize="13sp"
+            tools:text="Video title jfjjfjjjjj  hhfhhfhhfhhfh" />
+
+        <ImageView
+            android:id="@+id/overflow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="end|center"
+            android:contentDescription="@string/app_name"
+            android:padding="4dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_dots" />
+
+
+        <TextView
+            android:id="@+id/chanel_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/padding_10"
+            android:paddingTop="2dp"
+            android:paddingRight="@dimen/padding_10"
+            android:textSize="12sp"
+            tools:text="by chanel" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chanel_name"
+            android:paddingTop="4dp"
+            android:weightSum="1">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/item_card"
-                android:layout_width="@dimen/album_cover_width"
-                android:layout_height="@dimen/album_cover_height"
-                app:cardBackgroundColor="@color/placeholder_grey"
-                app:cardPreventCornerOverlap="false">
-
-                <ProgressBar
-                    android:id="@+id/movie_progress"
-                    style="@style/Widget.AppCompat.ProgressBar"
-                    android:layout_width="@dimen/activity_margin"
-                    android:layout_height="@dimen/activity_margin"
-                    android:layout_gravity="center"
-                    android:theme="@style/CircularProgress" />
-
-                <ImageView
-                    android:id="@+id/itemImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="fitXY" />
-
-                <LinearLayout
-                    android:id="@+id/video_duration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginStart="4dp"
-                    android:background="@drawable/semi_transparent_box_with_border"
-                    android:gravity="end"
-                    android:orientation="horizontal"
-                    android:visibility="visible">
-
-                    <TextView
-                        android:id="@+id/tv_duration"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingBottom="4dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="4dp"
-                        android:textColor="@android:color/primary_text_dark"
-                        android:textSize="10sp"
-                        android:visibility="visible"
-                        tools:ignore="SmallSp"
-                        tools:text="--:--" />
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-
-            <RelativeLayout
+            <TextView
+                android:id="@+id/views"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/padding_10"
+                android:paddingRight="@dimen/padding_10"
+                android:paddingBottom="@dimen/padding_5"
+                android:textSize="9sp"
+                tools:ignore="SmallSp"
+                tools:text="1200000 views" />
 
-                <TextView
-                    android:id="@+id/tvTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:ellipsize="end"
-                    android:lines="2"
-                    android:maxLines="2"
-                    android:paddingLeft="@dimen/padding_10"
-                    android:paddingRight="@dimen/padding_10"
-                    android:paddingTop="4dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="13sp"
-                    tools:text="Video title jfjjfjjjjj  hhfhhfhhfhhfh" />
-
-                <ImageView
-                    android:id="@+id/overflow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="end|center"
-                    android:contentDescription="@string/app_name"
-                    android:padding="4dp"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_dots" />
-
-
-                <TextView
-                    android:id="@+id/chanel_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvTitle"
-                    android:maxLines="1"
-                    android:paddingLeft="@dimen/padding_10"
-                    android:paddingRight="@dimen/padding_10"
-                    android:paddingTop="2dp"
-                    android:textSize="12sp"
-                    tools:text="by chanel" />
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/chanel_name"
-                    android:paddingTop="6dp"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:id="@+id/views"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLines="1"
-                        android:paddingBottom="@dimen/padding_5"
-                        android:paddingLeft="@dimen/padding_10"
-                        android:paddingRight="@dimen/padding_10"
-                        android:textSize="9sp"
-                        tools:ignore="SmallSp"
-                        tools:text="1200000 views" />
-
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:maxLines="1"
-                        android:paddingBottom="@dimen/padding_5"
-                        android:paddingEnd="@dimen/padding_10"
-                        android:paddingRight="@dimen/padding_10"
-                        android:textSize="9sp"
-                        tools:ignore="RtlSymmetry,SmallSp"
-                        tools:text="17 July 17" />
-                </LinearLayout>
-
-            </RelativeLayout>
-
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:maxLines="1"
+                android:paddingEnd="@dimen/padding_10"
+                android:paddingRight="@dimen/padding_10"
+                android:paddingBottom="@dimen/padding_5"
+                android:textSize="9sp"
+                tools:ignore="RtlSymmetry,SmallSp"
+                tools:text="17 July 17" />
         </LinearLayout>
-    </android.support.v7.widget.CardView>
 
+    </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
