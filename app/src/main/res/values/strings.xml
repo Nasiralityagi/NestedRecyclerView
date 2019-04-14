@@ -1,4 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="fsv_transition_search_layout">fsv_transition_search_layout</string>
+    <string name="hint">Search</string>
+    <string name="speech_prompt">Say Something</string>
+    <string name="speech_not_supported">speech to text doesn\'t seems supported</string>
+    <string name="menu_clear">clear</string>
+    <string name="menu_tts">text to speech</string>
+    <string name="menu_toggle_icon">Icon Visible</string>
+    <string name="menu_icon_type">Icon Type</string>
+
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="my_api_key">ec01f8c2eb6ac402f2ca026dc2d9b8fd</string>
@@ -117,7 +128,7 @@
     <string name="retry">Retry</string>
     <string name="by">By</string>
     <string name="views">Views</string>
-    <string name="view_all">VIEW ALL</string>
+    <string name="view_all">View All</string>
     <string name="privacy_footer">Privacy Policy</string>
 
 

@@ -198,32 +198,17 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
+        //getMenuInflater().inflate(R.menu.search, menu);
+        //MenuItem item = menu.findItem(R.id.menu_icon_search);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
-                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
-                if(fragment==null){
-                    fragment = VListPanel.newInstance("1");
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out)
-                            .replace(R.id.container,fragment,"")
-                            .add(R.id.container, fragment, fragment.getClass().getName())
-                            .addToBackStack(fragment.getClass().getName())
-                            .commit();
-                }else {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .attach(fragment)
-                            .commit();
-                }
-                return true;
+            /*case R.id.menu_icon_search:
+                startActivity(new Intent(this,SearchActivity.class));
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
