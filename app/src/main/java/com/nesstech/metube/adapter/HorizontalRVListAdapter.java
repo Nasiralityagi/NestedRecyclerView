@@ -27,6 +27,7 @@ public class HorizontalRVListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private static final int ITEM = 0;
     private static final int LOADING = 1;
+    private int viewShowPos = -1;
 
     private List<Item> movieResults;
     private Context context;
@@ -37,11 +38,12 @@ public class HorizontalRVListAdapter extends RecyclerView.Adapter<RecyclerView.V
     private SetVideoClickListener mListener;
     private PaginationAdapterCallback mCallback;
 
-    HorizontalRVListAdapter(Context context, VerticalRVListAdapter ctx, SetVideoClickListener mListener) {
+    HorizontalRVListAdapter(Context context, VerticalRVListAdapter ctx, SetVideoClickListener mListener, int viewShowPos) {
         this.context = context;
         this.mCallback = ctx;
         movieResults = new ArrayList<>();
         this.mListener = mListener;
+        this.viewShowPos = viewShowPos;
     }
 
 
@@ -50,24 +52,27 @@ public class HorizontalRVListAdapter extends RecyclerView.Adapter<RecyclerView.V
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
         switch (viewType) {
             case ITEM:
-                viewHolder = getViewHolder(parent, inflater);
+                View v1 = null;
+                if (viewShowPos == 2) {
+                    v1 = inflater.inflate(R.layout.list_single_card_vertical, parent, false);
+                } else if (viewShowPos == 4) {
+                    v1 = inflater.inflate(R.layout.list_single_card_horizontal, parent, false);
+                } else if (viewShowPos == 6) {
+                    v1 = inflater.inflate(R.layout.list_single_card_vertical, parent, false);
+                } else if (viewShowPos == 8) {
+                    v1 = inflater.inflate(R.layout.list_single_card_horizontal, parent, false);
+                } else {
+                    v1 = inflater.inflate(R.layout.list_single_card_new, parent, false);
+                }
+                viewHolder = new SingleItemRowHolder(v1);
                 break;
             case LOADING:
                 View v2 = inflater.inflate(R.layout.item_progres, parent, false);
                 viewHolder = new LoadingVH(v2);
                 break;
         }
-        return viewHolder;
-    }
-
-    @NonNull
-    private RecyclerView.ViewHolder getViewHolder(ViewGroup parent, LayoutInflater inflater) {
-        RecyclerView.ViewHolder viewHolder;
-        View v1 = inflater.inflate(R.layout.list_single_card_new, parent, false);
-        viewHolder = new SingleItemRowHolder(v1);
         return viewHolder;
     }
 
@@ -155,6 +160,14 @@ public class HorizontalRVListAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
+    public interface SetVideoClickListener {
+        void onVideoItemClick(Item item);
+
+        void onMoreIconClick(Item item);
+
+        void onVideoItemLongClick(Item item);
+    }
+
     /* View Holders*/
     private class SingleItemRowHolder extends RecyclerView.ViewHolder {
         ImageView itemImage;
@@ -181,7 +194,7 @@ public class HorizontalRVListAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         private void bindData(final Item result) {
-            if(result == null)
+            if (result == null)
                 return;
             String videoChannelTitle = result.getSnippet().getChannelTitle() == null ? "Unknown" : result.getSnippet().getChannelTitle();
             String videoImage = result.getSnippet().getThumbnails().getHigh().getUrl() == null ?
@@ -228,7 +241,6 @@ public class HorizontalRVListAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-
     private class LoadingVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ProgressBar mProgressBar;
         private ImageButton mRetryBtn;
@@ -268,14 +280,6 @@ public class HorizontalRVListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
             }
         }
-    }
-
-    public interface SetVideoClickListener {
-        void onVideoItemClick(Item item);
-
-        void onMoreIconClick(Item item);
-
-        void onVideoItemLongClick(Item item);
     }
 
 }

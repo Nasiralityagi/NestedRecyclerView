@@ -70,7 +70,7 @@
     <dimen name="backdrop_subtitle">18dp</dimen>
     <dimen name="card_margin">5dp</dimen>
     <dimen name="card_album_radius">2dp</dimen>
-    <dimen name="album_cover_width">145dp</dimen>
+    <dimen name="album_cover_width">155dp</dimen>
     <dimen name="album_cover_height">100dp</dimen>
     <dimen name="padding_10">10dp</dimen>
     <dimen name="album_title">15dp</dimen>

@@ -1,5 +1,7 @@
 package com.nesstech.metube.adapter;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -17,6 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -102,7 +108,7 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         switch (getItemViewType(position)) {
             case ITEM:
                 final VideosListViewHolder holder = (VideosListViewHolder) vh;
-                holder.bindVideoList(getItem(position));
+                holder.bindVideoList(getItem(position),position);
                 break;
 
             case HEADER:
@@ -230,6 +236,38 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         PagerViewHolder(View itemView) {
             super(itemView);
             pager = itemView.findViewById(R.id.pager);
+            pager.setOffscreenPageLimit(3);
+            pager.setPageTransformer(true, new ViewPager.PageTransformer() {
+                @Override
+                public void transformPage(View page, float position) {
+                    int pageWidth = pager.getMeasuredWidth() -
+                            pager.getPaddingLeft() - pager.getPaddingRight();
+                    int paddingLeft = pager.getPaddingLeft();
+                    float transformPos = (float) (page.getLeft() -
+                            (pager.getScrollX() + paddingLeft)) / pageWidth;
+                    if (transformPos < -1) {
+                        // [-Infinity,-1)
+                        // This page is way off-screen to the left.
+                        page.setAlpha(0.8f);// to make left transparent
+                        page.animate()
+                                .scaleY(0.9f)
+                                .setDuration(100)
+                                .start();
+                    } else if (transformPos <= 1) {
+                        // [-1,1]
+                        page.setScaleY(1f);
+                        page.setAlpha(1f);//to make centre no trans
+                    } else {
+                        // (1,+Infinity]
+                        // This page is way off-screen to the right.
+                       page.setAlpha(0.8f);// to make right transparent
+                        page.animate()
+                                .scaleY(0.9f)
+                                .setDuration(100)
+                                .start();
+                    }
+                }
+            });
             recyclerView = itemView.findViewById(R.id.recyclerView);
             arrayList = new ArrayList<>();
             arrayList.add(new ModelSites("Youtube", R.drawable.ic_youtube, "#09A9FF", "https://m.youtube.com/"));
@@ -318,6 +356,7 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private class VideosListViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+        private View main_layout;
         private final TextView txtName;
         private final TextView tvMore;
         private final SpringRecyclerView recyclerView;
@@ -332,14 +371,15 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         VideosListViewHolder(View view) {
             super(view);
+            main_layout = view.findViewById(R.id.main_layout);
             txtName = view.findViewById(R.id.txtName);
             tvMore = view.findViewById(R.id.tvMore);
             recyclerView = view.findViewById(R.id.main_recycler);
             tvMore.setOnClickListener(this);
         }
 
-        private void bindVideoList(final SectionDataModel feed) {
-            final HorizontalRVListAdapter adapter = new HorizontalRVListAdapter(mContext, VerticalRVListAdapter.this, mHrvItemListener);
+        private void bindVideoList(final SectionDataModel feed,int viewShowPos) {
+            final HorizontalRVListAdapter adapter = new HorizontalRVListAdapter(mContext, VerticalRVListAdapter.this, mHrvItemListener,viewShowPos);
             recyclerView.setAdapter(adapter);
             recyclerView.addOnScrollListener(new PaginationScrollListener(recyclerView.getLayoutManager()) {
                 @Override
@@ -400,7 +440,6 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         private void loadFirstPage(final SectionDataModel feed, final HorizontalRVListAdapter adapter) {
-            txtName.setText("");
             movieService.getTopRatedMovies("snippet,contentDetails,statistics", itemLoadCount, "mostPopular", feed.getHeaderId(), "AIzaSyAWIt3tzvIHGydiKU5UOj2GDj73rfjeeZs", pageToken).enqueue(new Callback<YoutubeData>() {
                 @Override
                 public void onResponse(@NonNull Call<YoutubeData> call, @NonNull Response<YoutubeData> response) {
@@ -408,6 +447,7 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         YoutubeData data = response.body();
                         int totalResult = data.getPageInfo().getTotalResults();
                         if (totalResult > 0) {
+                            main_layout.setVisibility(View.VISIBLE);//visible the label
                             TOTAL_PAGES = totalResult;
                             txtName.setText(feed.getHeaderTitle());
                             List<Item> results = fetchResults(data);

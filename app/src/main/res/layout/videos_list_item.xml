@@ -1,9 +1,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#dddddd">
+    android:background="#dddddd"
+    android:visibility="gone">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -36,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:padding="10dp"
+            android:padding="11dp"
             android:text="@string/view_all"
             android:textColor="@color/text_view_color" />
 
@@ -50,7 +52,6 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:clipToPadding="false"
-            android:minHeight="200dp"
             android:orientation="horizontal"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"

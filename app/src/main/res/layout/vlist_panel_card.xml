@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/album_cover_height"
-    android:layout_margin="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="4dp"
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal">
 
@@ -69,8 +72,7 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:padding="8dp">
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/tvTitle"
@@ -81,10 +83,9 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:ellipsize="end"
-            android:lines="2"
-            android:maxLines="2"
+            android:maxLines="3"
+            android:minLines="2"
             android:paddingLeft="@dimen/padding_10"
-            android:paddingTop="4dp"
             android:paddingRight="@dimen/padding_10"
             android:textColor="@android:color/black"
             android:textSize="13sp"
@@ -120,7 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/chanel_name"
-            android:paddingTop="4dp"
+            android:padding="4dp"
             android:weightSum="1">
 
             <TextView
@@ -129,8 +130,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:maxLines="1"
-                android:paddingLeft="@dimen/padding_10"
-                android:paddingRight="@dimen/padding_10"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:paddingBottom="@dimen/padding_5"
                 android:textSize="9sp"
                 tools:ignore="SmallSp"
