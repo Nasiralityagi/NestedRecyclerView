@@ -12,8 +12,17 @@
         android:clipToPadding="false"
         android:orientation="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:listitem="@layout/videos_list_item" />
+        tools:listitem="@layout/videos_list_item"
+        android:background="#dddddd"/>
 
     <include layout="@layout/error_layout" />
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/progress_white_circle"
+        android:padding="4dp"
+        android:rotation="10" />
 
 </FrameLayout>

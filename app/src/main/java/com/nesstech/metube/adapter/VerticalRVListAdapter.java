@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -37,6 +38,7 @@ import com.bumptech.glide.request.target.Target;
 import com.nesstech.metube.R;
 import com.nesstech.metube.Retrofit2.VIdeoApi;
 import com.nesstech.metube.Retrofit2.VideoService;
+import com.nesstech.metube.Utility.Constant;
 import com.nesstech.metube.Utility.Utills;
 import com.nesstech.metube.activity.MainActivity;
 import com.nesstech.metube.adapter.HorizontalRVListAdapter.SetVideoClickListener;
@@ -46,6 +48,7 @@ import com.nesstech.metube.model.ModelSites;
 import com.nesstech.metube.model.SectionDataModel;
 import com.nesstech.metube.pagination.PaginationAdapterCallback;
 import com.nesstech.metube.pagination.PaginationScrollListener;
+import com.nesstech.metube.widget.internal.ViewUtils;
 import com.nesstech.metube.youmodel.Item;
 import com.nesstech.metube.youmodel.YoutubeData;
 
@@ -65,7 +68,6 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private final FragmentManager childFragmentManager;
     private VideoService movieService;
     private List<SectionDataModel> listItems;
-    private int ONEPLUS = 0;
     private boolean isLoadingAdded = false;
     private List<Item> resultsTopTrending;
     private SetViewMoreClickListener mVrvItemListener;
@@ -228,6 +230,8 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private class PagerViewHolder extends RecyclerView.ViewHolder {
         final ViewPager pager;
+        float MAX_SCALE = 0.0f;
+        int mPageMargin = ViewUtils.dpToPx(25);
 
         final SpringRecyclerView recyclerView;
         final List<ModelSites> arrayList;
@@ -237,34 +241,29 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             super(itemView);
             pager = itemView.findViewById(R.id.pager);
             pager.setOffscreenPageLimit(3);
-            pager.setPageTransformer(true, new ViewPager.PageTransformer() {
+            pager.setOverScrollMode(2);
+            pager.setPadding(mPageMargin,mPageMargin/4,mPageMargin,mPageMargin/4);
+            pager.setPageTransformer(false, new ViewPager.PageTransformer() {
                 @Override
-                public void transformPage(View page, float position) {
-                    int pageWidth = pager.getMeasuredWidth() -
-                            pager.getPaddingLeft() - pager.getPaddingRight();
-                    int paddingLeft = pager.getPaddingLeft();
-                    float transformPos = (float) (page.getLeft() -
-                            (pager.getScrollX() + paddingLeft)) / pageWidth;
-                    if (transformPos < -1) {
-                        // [-Infinity,-1)
-                        // This page is way off-screen to the left.
-                        page.setAlpha(0.8f);// to make left transparent
-                        page.animate()
-                                .scaleY(0.9f)
-                                .setDuration(100)
-                                .start();
-                    } else if (transformPos <= 1) {
-                        // [-1,1]
-                        page.setScaleY(1f);
-                        page.setAlpha(1f);//to make centre no trans
+                public void transformPage(View view, float position) {
+                    view.setPadding(mPageMargin / 3, mPageMargin / 5, mPageMargin / 3, mPageMargin / 5);
+                    if (MAX_SCALE == 0.0f && position > 0.0f && position < 1.0f) {
+                        MAX_SCALE = position;
+                    }
+                    position = position - MAX_SCALE;
+                    float absolutePosition = Math.abs(position);
+                    if (position <= -1.0f || position >= 1.0f) {
+                        view.setAlpha(0.5f);
+                        // Page is not visible -- stop any running animations
+                    } else if (position == 0.0f) {
+                        // Page is selected -- reset any views if necessary
+                        view.setScaleX((1 + MAX_SCALE));
+                        view.setScaleY((1 + MAX_SCALE));
+                        view.setAlpha(1);
                     } else {
-                        // (1,+Infinity]
-                        // This page is way off-screen to the right.
-                       page.setAlpha(0.8f);// to make right transparent
-                        page.animate()
-                                .scaleY(0.9f)
-                                .setDuration(100)
-                                .start();
+                        view.setScaleX(1 + MAX_SCALE * (1 - absolutePosition));
+                        view.setScaleY(1 + MAX_SCALE * (1 - absolutePosition));
+                        view.setAlpha( Math.max(0.5f, 1 - absolutePosition));
                     }
                 }
             });
@@ -276,11 +275,11 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             arrayList.add(new ModelSites("Dailymotion", R.drawable.ic_dailymotion, "#0A9B88", "http://www.dailymotion.com/"));
             arrayList.add(new ModelSites("Vimeo", R.drawable.ic_vimeo, "#673BB7", "https://vimeo.com/"));
             //arrayList.add(new ModelSites("Vine", R.drawable.ic_vines, "#4BAA50", "https://vine.co/"));
-            adapter = new SiteItemAdapter(mContext, arrayList, mSiteItemListener);
+            adapter = new SiteItemAdapter(recyclerView.getContext(), arrayList, mSiteItemListener);
         }
 
         private void bindPagerItems() {
-            pager.setPageMargin((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, mContext.getResources().getDisplayMetrics()));
+           // pager.setPageMargin((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, mContext.getResources().getDisplayMetrics()));
             PagerAdapter pagerAdapter = new FragmentPagerAdapter(childFragmentManager) {
                 @Override
                 public Fragment getItem(int position) {
@@ -307,8 +306,7 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-
-    private class LoadingVH extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private static class LoadingVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ProgressBar mProgressBar;
         private ImageButton mRetryBtn;
         private LinearLayout mErrorLayout;
@@ -339,7 +337,7 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         private boolean isNetworkConnected() {
-            ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager cm = (ConnectivityManager) itemView.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             return (cm != null ? cm.getActiveNetworkInfo() : null) != null;
         }
 
@@ -369,17 +367,17 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private int currentPage = PAGE_START;
         private int itemLoadCount = 5;
 
-        VideosListViewHolder(View view) {
-            super(view);
-            main_layout = view.findViewById(R.id.main_layout);
-            txtName = view.findViewById(R.id.txtName);
-            tvMore = view.findViewById(R.id.tvMore);
-            recyclerView = view.findViewById(R.id.main_recycler);
+        VideosListViewHolder(View itemView) {
+            super(itemView);
+            main_layout = itemView.findViewById(R.id.main_layout);
+            txtName = itemView.findViewById(R.id.txtName);
+            tvMore = itemView.findViewById(R.id.tvMore);
+            recyclerView = itemView.findViewById(R.id.main_recycler);
             tvMore.setOnClickListener(this);
         }
 
         private void bindVideoList(final SectionDataModel feed,int viewShowPos) {
-            final HorizontalRVListAdapter adapter = new HorizontalRVListAdapter(mContext, VerticalRVListAdapter.this, mHrvItemListener,viewShowPos);
+            final HorizontalRVListAdapter adapter = new HorizontalRVListAdapter(itemView.getContext(), VerticalRVListAdapter.this, mHrvItemListener,viewShowPos);
             recyclerView.setAdapter(adapter);
             recyclerView.addOnScrollListener(new PaginationScrollListener(recyclerView.getLayoutManager()) {
                 @Override
@@ -409,17 +407,13 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         private void loadNextPage(final SectionDataModel feed, final HorizontalRVListAdapter adapter) {
-            System.out.println("Youtube data pageToken = " + pageToken + " IDDD= " + feed.getHeaderId());
-            System.out.println("Youtube data currentPage = " + currentPage + " Total page= " + TOTAL_PAGES);
-
             if (pageToken.isEmpty()) {
                 adapter.removeLoadingFooter();
                 isLoading = false;
                 isLastPage = true;
                 return;
             }
-
-            movieService.getTopRatedMovies("snippet,contentDetails,statistics", itemLoadCount, "mostPopular", feed.getHeaderId(), "AIzaSyAWIt3tzvIHGydiKU5UOj2GDj73rfjeeZs", pageToken).enqueue(new Callback<YoutubeData>() {
+            movieService.getTopRatedMovies(Constant.part, itemLoadCount, Constant.filter, feed.getHeaderId(), Constant.api_key, pageToken).enqueue(new Callback<YoutubeData>() {
                 @Override
                 public void onResponse(@NonNull Call<YoutubeData> call, @NonNull Response<YoutubeData> response) {
                     if (response.body() != null && response.isSuccessful()) {
@@ -435,12 +429,13 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
                 @Override
                 public void onFailure(@NonNull Call<YoutubeData> call, @NonNull Throwable t) {
+                    Toast.makeText(mContext,"Failed to get response!",Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
         private void loadFirstPage(final SectionDataModel feed, final HorizontalRVListAdapter adapter) {
-            movieService.getTopRatedMovies("snippet,contentDetails,statistics", itemLoadCount, "mostPopular", feed.getHeaderId(), "AIzaSyAWIt3tzvIHGydiKU5UOj2GDj73rfjeeZs", pageToken).enqueue(new Callback<YoutubeData>() {
+            movieService.getTopRatedMovies(Constant.part, itemLoadCount, Constant.filter, feed.getHeaderId(), Constant.api_key, pageToken).enqueue(new Callback<YoutubeData>() {
                 @Override
                 public void onResponse(@NonNull Call<YoutubeData> call, @NonNull Response<YoutubeData> response) {
                     if (response.body() != null && response.isSuccessful()) {
@@ -463,6 +458,7 @@ public class VerticalRVListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
                 @Override
                 public void onFailure(@NonNull Call<YoutubeData> call, @NonNull Throwable t) {
+                    Toast.makeText(mContext,"Failed to get response!",Toast.LENGTH_SHORT).show();
                 }
             });
         }

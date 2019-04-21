@@ -15,10 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.nesstech.metube.R;
 import com.nesstech.metube.Retrofit2.VIdeoApi;
 import com.nesstech.metube.Retrofit2.VideoService;
+import com.nesstech.metube.Utility.Constant;
 import com.nesstech.metube.activity.MainActivity;
 import com.nesstech.metube.adapter.HorizontalRVListAdapter;
 import com.nesstech.metube.adapter.VListAdapter;
@@ -169,7 +171,7 @@ public class VListPanel extends Fragment implements PaginationAdapterCallback {
     }
 
     private void loadFirstPage(final String id) {
-        movieService.getTopRatedMovies("snippet,contentDetails,statistics", itemLoadCount,"mostPopular",  id, "AIzaSyAWIt3tzvIHGydiKU5UOj2GDj73rfjeeZs",pageToken).enqueue(new Callback<YoutubeData>() {
+        movieService.getTopRatedMovies(Constant.part, itemLoadCount,Constant.filter,  id, Constant.api_key,pageToken).enqueue(new Callback<YoutubeData>() {
             @Override
             public void onResponse(@NonNull Call<YoutubeData> call, @NonNull Response<YoutubeData> response) {
                 if (response.body() != null && response.isSuccessful()) {
@@ -189,7 +191,7 @@ public class VListPanel extends Fragment implements PaginationAdapterCallback {
 
             @Override
             public void onFailure(@NonNull Call<YoutubeData> call, @NonNull Throwable t) {
-              showErrorView();
+                Toast.makeText(getContext(),"Failed to get response!",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -208,8 +210,7 @@ public class VListPanel extends Fragment implements PaginationAdapterCallback {
             return;
         }
 
-
-        movieService.getTopRatedMovies("snippet,contentDetails,statistics", itemLoadCount,"mostPopular",  id, "AIzaSyAWIt3tzvIHGydiKU5UOj2GDj73rfjeeZs", pageToken).enqueue(new Callback<YoutubeData>() {
+        movieService.getTopRatedMovies(Constant.part, itemLoadCount,Constant.filter,  id, Constant.api_key, pageToken).enqueue(new Callback<YoutubeData>() {
             @Override
             public void onResponse(@NonNull Call<YoutubeData> call, @NonNull Response<YoutubeData> response) {
                 if (response.body() != null && response.isSuccessful()) {
@@ -225,7 +226,7 @@ public class VListPanel extends Fragment implements PaginationAdapterCallback {
 
             @Override
             public void onFailure(@NonNull Call<YoutubeData> call, @NonNull Throwable t) {
-              showErrorView();
+                Toast.makeText(getContext(),"Failed to get response!",Toast.LENGTH_SHORT).show();
             }
         });
     }

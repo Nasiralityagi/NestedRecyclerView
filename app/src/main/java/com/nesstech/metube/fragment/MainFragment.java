@@ -15,10 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.nesstech.metube.R;
 import com.nesstech.metube.Retrofit2.VIdeoApi;
 import com.nesstech.metube.Retrofit2.VideoService;
+import com.nesstech.metube.Utility.Constant;
 import com.nesstech.metube.activity.MainActivity;
 import com.nesstech.metube.adapter.VerticalRVListAdapter;
 import com.nesstech.metube.customview.SpringRecyclerView;
@@ -35,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainFragment extends Fragment {
-    private static final String TAG = "MainActivityFragment";
+    private static final String TAG = "MainFragment";
     private int TOTAL_PAGES = 3;
     private int PAGE_START = 1;
     private boolean isLoading = false;
@@ -47,6 +50,7 @@ public class MainFragment extends Fragment {
     private VerticalRVListAdapter adapter;
     private Context mContext;
     private String[] sectionkey, sectionName;
+    private ProgressBar mProgress;
 
     public static MainFragment createFor() {
         MainFragment fragment = new MainFragment();
@@ -63,6 +67,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         mContext = getContext();
+        mProgress = rootView.findViewById(R.id.progress);
         final SpringRecyclerView rv = rootView.findViewById(R.id.main_recycler);
         /**setHasFixedSize(true) means the RecyclerView has children (items)
          * that has fixed width and height. This allows the RecyclerView
@@ -87,11 +92,12 @@ public class MainFragment extends Fragment {
             showErrorView();
         } else {
             hideErrorView();
-            movieService.getToTrandingVideo("snippet,contentDetails,statistics", "15", "mostPopular", "IN", "AIzaSyAWIt3tzvIHGydiKU5UOj2GDj73rfjeeZs").enqueue(new Callback<YoutubeData>() {
+            movieService.getToTrandingVideo(Constant.part, Constant.max_result, Constant.filter, Constant.region_code, Constant.api_key).enqueue(new Callback<YoutubeData>() {
                 @Override
                 public void onResponse(@NonNull Call<YoutubeData> call, @NonNull Response<YoutubeData> response) {
-                    if (response.isSuccessful()) {
+                    if (response.body()!=null && response.isSuccessful()) {
                         if (response.body().getPageInfo().getTotalResults() > 0) {
+                            mProgress.setVisibility(View.GONE);
                             List<Item> resultsTopTrending = response.body().getItems();
                             adapter = new VerticalRVListAdapter(resultsTopTrending, ((MainActivity) getContext()), getChildFragmentManager());
                             rv.setAdapter(adapter);
@@ -127,7 +133,7 @@ public class MainFragment extends Fragment {
 
                 @Override
                 public void onFailure(@NonNull Call<YoutubeData> call, @NonNull Throwable t) {
-                    showErrorView();
+                    Toast.makeText(getContext(),"Failed to get response!",Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -152,6 +158,7 @@ public class MainFragment extends Fragment {
     }
 
     private void showErrorView() {
+        mProgress.setVisibility(View.GONE);
         errorLayout.setVisibility(View.VISIBLE);
     }
 

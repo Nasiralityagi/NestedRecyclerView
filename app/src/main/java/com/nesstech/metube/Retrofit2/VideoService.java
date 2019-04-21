@@ -18,14 +18,6 @@ public interface VideoService {
             @Query("key") String key,
             @Query("pageToken") String pageToken);
 
-    /*@GET("videos?")
-    Call<YoutubeData> getTopRatedMovies1(
-            @Query("part") String snippet,
-            @Query("maxResults") String maxResults,
-            @Query("chart") String chart,
-            @Query("regionCode") String regionCode,
-            @Query("videoCategoryId") String vid,
-            @Query("key") String key);*/
 
     @GET("videos?")
     Call<YoutubeData> getToTrandingVideo(
