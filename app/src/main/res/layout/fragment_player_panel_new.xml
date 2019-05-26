@@ -5,13 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".fragment.PlayerPanel">
 
-
-    <LinearLayout
-        android:id="@+id/adLayout"
+    <fragment
+        android:name="com.google.android.youtube.player.YouTubePlayerFragment"
+        android:id="@+id/youtube_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible"/>
+        android:layout_gravity="center_vertical"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

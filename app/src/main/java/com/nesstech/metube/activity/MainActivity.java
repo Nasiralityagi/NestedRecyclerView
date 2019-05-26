@@ -31,6 +31,7 @@ import com.nesstech.metube.adapter.SiteItemAdapter;
 import com.nesstech.metube.adapter.VerticalRVListAdapter;
 import com.nesstech.metube.fragment.MainFragment;
 import com.nesstech.metube.fragment.PlayerPanel;
+import com.nesstech.metube.fragment.PlayerPanelNew;
 import com.nesstech.metube.fragment.VListPanel;
 import com.nesstech.metube.github.pedrovgs.DraggableListener;
 import com.nesstech.metube.github.pedrovgs.DraggablePanel;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements
     private String[] screenTitles;
     private Drawable[] screenIcons;
     private ViewGroup playerParent;
-    private PlayerPanel topFragment;
+    private PlayerPanelNew topFragment;
     private VListPanel bottomFragment;
     private boolean isLandScapeMode;
 
@@ -256,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onVideoItemClick(Item item) {
         /*Like Youtube Dragable Panel*/
-        topFragment = PlayerPanel.newInstance(item);
+        topFragment = PlayerPanelNew.newInstance(item);
         bottomFragment = VListPanel.newInstance(item.getSnippet().getCategoryId());
         setUpDragablePanel(item);
     }
