@@ -17,8 +17,8 @@ package com.nesstech.metube.github.pedrovgs;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -373,9 +373,4 @@ public class DraggablePanel extends FrameLayout {
         return draggableView != null && draggableView.isClosedAtLeft();
     }
 
-    public void removeFragment(){
-        if(draggableView!=null) {
-            draggableView.removeFragment();
-        }
-    }
 }

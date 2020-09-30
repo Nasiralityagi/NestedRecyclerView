@@ -10,7 +10,7 @@
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_card"
         android:layout_width="@dimen/album_cover_width"
         android:layout_height="match_parent">
@@ -67,7 +67,7 @@
             tools:ignore="SmallSp"
             tools:text="--:--" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
         android:layout_width="0dp"

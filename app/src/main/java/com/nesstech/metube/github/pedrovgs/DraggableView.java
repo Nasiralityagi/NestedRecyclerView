@@ -18,18 +18,19 @@ package com.nesstech.metube.github.pedrovgs;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.ViewDragHelper;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.view.MotionEventCompat;
+import androidx.core.view.ViewCompat;
+import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.nesstech.metube.R;
-import com.nesstech.metube.fragment.PlayerPanel;
+import com.nesstech.metube.fragment.MainFragment;
+import com.nesstech.metube.fragment.PlayerPanelNew;
 import com.nesstech.metube.fragment.VListPanel;
 import com.nesstech.metube.github.pedrovgs.transformer.Transformer;
 import com.nesstech.metube.github.pedrovgs.transformer.TransformerFactory;
@@ -404,16 +405,10 @@ public class DraggableView extends RelativeLayout {
     public void removeFragment() {
         if (fragmentManager == null)
             return;
-        Fragment fragOne = fragmentManager.findFragmentById(R.id.drag_view);
-        Fragment fragTwo = fragmentManager.findFragmentById(R.id.second_view);
-        if (fragOne instanceof PlayerPanel) {
-            fragmentManager.beginTransaction().remove(fragOne).commit();
-            fragmentManager.executePendingTransactions();
-        }
 
-        if (fragTwo instanceof VListPanel) {
-            fragmentManager.beginTransaction().remove(fragTwo).commit();
-            fragmentManager.executePendingTransactions();
+        Fragment fragOne = fragmentManager.findFragmentById(R.id.drag_view);
+        if (fragOne instanceof PlayerPanelNew) {
+            fragmentManager.beginTransaction().remove(fragOne).commit();
         }
     }
 
@@ -625,8 +620,8 @@ public class DraggableView extends RelativeLayout {
      * @param topFragment to be attached.
      */
     void attachTopFragment(Fragment topFragment) {
-        removeFragment();
-        addFragmentToView(R.id.drag_view, topFragment);
+         removeFragment();
+         addFragmentToView(R.id.drag_view, topFragment);
     }
 
     /**
@@ -636,7 +631,11 @@ public class DraggableView extends RelativeLayout {
      * @param fragment to be attached.
      */
     private void addFragmentToView(final int viewId, final Fragment fragment) {
-        fragmentManager.beginTransaction().replace(viewId, fragment).commit();
+        fragmentManager.beginTransaction()
+                .replace(viewId, fragment, fragment.getClass().getSimpleName())
+                //.addToBackStack( fragment.getClass().getSimpleName())
+                .commit();
+
     }
 
 

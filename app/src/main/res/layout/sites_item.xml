@@ -17,6 +17,6 @@
         android:padding="8dp"
         android:clipToPadding="false"
         android:clipChildren="false"
-        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:listitem="@layout/site_item_icon_view" />
 </RelativeLayout>

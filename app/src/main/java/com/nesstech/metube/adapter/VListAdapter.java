@@ -2,8 +2,8 @@ package com.nesstech.metube.adapter;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,6 @@ import com.nesstech.metube.R;
 import com.nesstech.metube.Utility.Utills;
 import com.nesstech.metube.activity.MainActivity;
 import com.nesstech.metube.adapter.HorizontalRVListAdapter.SetVideoClickListener;
-import com.nesstech.metube.fragment.VListPanel;
 import com.nesstech.metube.pagination.PaginationAdapterCallback;
 import com.nesstech.metube.youmodel.Item;
 

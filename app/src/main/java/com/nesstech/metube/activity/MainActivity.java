@@ -9,13 +9,13 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +30,6 @@ import com.nesstech.metube.adapter.HorizontalRVListAdapter;
 import com.nesstech.metube.adapter.SiteItemAdapter;
 import com.nesstech.metube.adapter.VerticalRVListAdapter;
 import com.nesstech.metube.fragment.MainFragment;
-import com.nesstech.metube.fragment.PlayerPanel;
 import com.nesstech.metube.fragment.PlayerPanelNew;
 import com.nesstech.metube.fragment.VListPanel;
 import com.nesstech.metube.github.pedrovgs.DraggableListener;
@@ -78,18 +77,18 @@ public class MainActivity extends AppCompatActivity implements
         draggablePanel = findViewById(R.id.draggable_panel);
         draggablePanelListnerInit();
 
-        Fragment selectedScreen = getSupportFragmentManager().findFragmentById(R.id.container);
-        if (selectedScreen == null) {
-            selectedScreen = MainFragment.createFor();
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+        if (fragment == null) {
+            fragment = MainFragment.getInstance();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                    .replace(R.id.container, selectedScreen, "")
+                    //.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .add(R.id.container, fragment, fragment.getClass().getSimpleName())
                     .commit();
         } else {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .attach(selectedScreen)
+                    .attach(fragment)
                     .commit();
         }
         /*Material Drawer*/
@@ -100,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements
     public void onConfigurationChanged(Configuration newConfig) {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             isLandScapeMode = true;
-            toolbar.setVisibility(View.GONE);
             playerParent = (ViewGroup) findViewById(R.id.drag_view);
             if (topFragment != null) {
                 View playerView = topFragment.getView();
@@ -114,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements
             }
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             isLandScapeMode = false;
-            toolbar.setVisibility(View.VISIBLE);
             playerParent = (ViewGroup) findViewById(R.id.drag_view);
             if (topFragment != null) {
                 View playerView = topFragment.getView();
@@ -159,13 +156,10 @@ public class MainActivity extends AppCompatActivity implements
                 refreshDraggablePanel();
             }
         });
-
     }
 
     private void refreshDraggablePanel() {
-        draggablePanel.removeFragment();
         draggablePanel.removeAllViews();//this method remove all views from drag view
-        draggablePanel.setVisibility(View.GONE);
     }
 
     private void setNavigationDrawer(Bundle savedInstanceState) {
@@ -308,9 +302,9 @@ public class MainActivity extends AppCompatActivity implements
         bottomFragment = VListPanel.newInstance(model.getHeaderId());
         getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .add(R.id.container, bottomFragment, bottomFragment.getClass().getName())
-                .addToBackStack(bottomFragment.getClass().getName())
+                //.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .add(R.id.container, bottomFragment, bottomFragment.getClass().getSimpleName())
+                .addToBackStack(bottomFragment.getClass().getSimpleName())
                 .commit();
     }
 }

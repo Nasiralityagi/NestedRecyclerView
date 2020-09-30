@@ -12,20 +12,22 @@ import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.AttrRes;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.MenuRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.MarginLayoutParamsCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
-import android.support.v7.widget.ActionMenuView;
-import android.support.v7.widget.AppCompatEditText;
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.MenuRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.MarginLayoutParamsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewPropertyAnimatorCompat;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Xml;
@@ -75,7 +77,7 @@ public class FloatingSearchView extends RelativeLayout {
     private static final Interpolator DECELERATE = new DecelerateInterpolator(3f);
     private static final Interpolator ACCELERATE = new AccelerateInterpolator(2f);
 
-    private RecyclerView.AdapterDataObserver mAdapterObserver = new android.support.v7.widget.RecyclerView.AdapterDataObserver() {
+    private RecyclerView.AdapterDataObserver mAdapterObserver = new androidx.recyclerview.widget.RecyclerView.AdapterDataObserver() {
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -621,16 +623,16 @@ public class FloatingSearchView extends RelativeLayout {
     }
 
     static private Drawable unwrap(Drawable icon) {
-        if(icon instanceof android.support.v7.graphics.drawable.DrawableWrapper)
-            return ((android.support.v7.graphics.drawable.DrawableWrapper)icon).getWrappedDrawable();
-        if(icon instanceof android.support.v4.graphics.drawable.WrappedDrawable)
-            return ((android.support.v4.graphics.drawable.WrappedDrawable)icon).getWrappedDrawable();
+        if(icon instanceof androidx.appcompat.graphics.drawable.DrawableWrapper)
+            return ((androidx.appcompat.graphics.drawable.DrawableWrapper)icon).getWrappedDrawable();
+        if(icon instanceof androidx.core.graphics.drawable.WrappedDrawable)
+            return ((androidx.core.graphics.drawable.WrappedDrawable)icon).getWrappedDrawable();
         if(Build.VERSION.SDK_INT >= 23 && icon instanceof android.graphics.drawable.DrawableWrapper)
             return ((android.graphics.drawable.DrawableWrapper)icon).getDrawable();
         return DrawableCompat.unwrap(icon);
     }
 
-    private static class RecyclerView extends android.support.v7.widget.RecyclerView {
+    private static class RecyclerView extends androidx.recyclerview.widget.RecyclerView {
 
         public RecyclerView(Context context) {
             super(context);
